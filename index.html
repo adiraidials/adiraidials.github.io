@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdiraiDials — every business in your area, one tap away</title>
+<meta name="description" content="AdiraiDials is a bilingual (Tamil &amp; English) community business directory for Android. Browse, call, and WhatsApp local businesses in one tap — built and moderated by the people who use it.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,420;9..144,560;9..144,640&family=Work+Sans:wght@400;500;600&family=Catamaran:wght@500;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#F3ECD8;
+    --paper-dim:#ECE3C9;
+    --ink:#1E2A45;
+    --ink-soft:#4B5670;
+    --marigold:#DC8A1D;
+    --marigold-deep:#B96F12;
+    --leaf:#3F7D52;
+    --card:#FBF6E8;
+    --card-line:#DCCB9C;
+    --line:#D8CBA0;
+    --white:#FFFDF6;
+    --max:1120px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Work Sans", sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:"Fraunces", serif;
+    color:var(--ink);
+    margin:0;
+    font-weight:640;
+    letter-spacing:-0.01em;
+  }
+
+  .tamil{ font-family:"Catamaran", sans-serif; }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  :focus-visible{
+    outline:3px solid var(--marigold-deep);
+    outline-offset:3px;
+  }
+
+  /* ---------- nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:40;
+    background:rgba(243,236,216,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    max-width:var(--max);
+    margin:0 auto;
+    gap:16px;
+  }
+  .wordmark{
+    display:flex; flex-direction:column; line-height:1.05;
+    text-decoration:none;
+  }
+  .wordmark .en{
+    font-family:"Fraunces", serif; font-weight:640; font-size:1.32rem; color:var(--ink);
+  }
+  .wordmark .ta{
+    font-family:"Catamaran", sans-serif; font-weight:600; font-size:0.72rem; color:var(--marigold-deep);
+    margin-top:2px;
+  }
+  nav.links{
+    display:flex; gap:28px; align-items:center;
+    font-size:0.94rem; font-weight:500;
+  }
+  nav.links a{ text-decoration:none; color:var(--ink-soft); }
+  nav.links a:hover{ color:var(--ink); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    border-radius:10px;
+    border:1px solid transparent;
+    font-family:"Work Sans", sans-serif;
+    font-weight:600;
+    font-size:0.96rem;
+    padding:12px 22px;
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn-primary{
+    background:var(--marigold);
+    color:#241503;
+    box-shadow:0 2px 0 var(--marigold-deep);
+  }
+  .btn-primary:hover{ background:#e3931f; }
+  .btn-primary.is-loading{ opacity:0.75; cursor:progress; }
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--ink);
+  }
+  .btn-ghost:hover{ background:rgba(30,42,69,0.06); }
+  .btn-small{ padding:9px 16px; font-size:0.88rem; border-radius:9px; }
+
+  .icon-dl{ width:16px; height:16px; flex:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:76px 0 84px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow-line{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow-line .dot{
+    width:8px; height:8px; border-radius:50%; background:var(--leaf);
+    box-shadow:0 0 0 3px rgba(63,125,82,0.18);
+  }
+  .eyebrow-line span{
+    font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.86rem;
+    color:var(--ink-soft);
+  }
+  h1.headline{
+    font-size:clamp(2.3rem, 4vw, 3.35rem);
+    line-height:1.08;
+    max-width:15ch;
+  }
+  .tamil-line{
+    font-family:"Catamaran", sans-serif;
+    font-weight:700;
+    font-size:1.28rem;
+    color:var(--marigold-deep);
+    margin-top:16px;
+  }
+  .hero p.lede{
+    margin-top:22px;
+    max-width:46ch;
+    color:var(--ink-soft);
+    font-size:1.08rem;
+  }
+  .cta-row{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    margin-top:32px;
+  }
+  .version-badge{
+    font-size:0.84rem;
+    color:var(--ink-soft);
+    font-variant-numeric:tabular-nums;
+    opacity:0;
+    transition:opacity 200ms ease;
+  }
+  .version-badge.is-visible{ opacity:1; }
+
+  /* phone mockup */
+  .phone-wrap{ display:flex; justify-content:center; }
+  .phone{
+    width:100%;
+    max-width:320px;
+    background:var(--ink);
+    border-radius:34px;
+    padding:14px;
+    box-shadow:0 30px 60px -20px rgba(30,42,69,0.45), 0 2px 0 rgba(30,42,69,0.06);
+    transform:rotate(2.5deg);
+  }
+  .phone-screen{
+    background:var(--paper-dim);
+    border-radius:22px;
+    overflow:hidden;
+    padding-bottom:10px;
+  }
+  .phone-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 16px 10px;
+  }
+  .phone-bar .app-title{
+    font-family:"Fraunces", serif; font-weight:640; font-size:1.05rem;
+  }
+  .phone-bar .app-sub{
+    font-family:"Catamaran", sans-serif; font-size:0.68rem; color:var(--marigold-deep); font-weight:700;
+  }
+  .search-pill{
+    margin:0 16px 12px;
+    background:var(--white);
+    border:1px solid var(--card-line);
+    border-radius:10px;
+    padding:9px 12px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+  }
+  .mock-card{
+    background:var(--card);
+    border:1px solid var(--card-line);
+    border-radius:14px;
+    margin:0 16px 10px;
+    padding:12px;
+  }
+  .mock-card .row-top{
+    display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+  }
+  .mock-pill{
+    background:#E8DDBB;
+    border-radius:7px;
+    padding:3px 8px;
+    line-height:1.15;
+  }
+  .mock-pill .en{ font-size:0.62rem; font-weight:700; color:var(--ink); display:block; }
+  .mock-pill .ta{ font-family:"Catamaran", sans-serif; font-size:0.6rem; font-weight:700; color:var(--marigold-deep); display:block; }
+  .mock-dot{
+    width:7px; height:7px; border-radius:50%; background:var(--leaf); margin-left:auto;
+  }
+  .mock-name{ font-weight:600; font-size:0.92rem; margin-top:8px; }
+  .mock-actions{ display:flex; gap:8px; margin-top:9px; }
+  .mock-actions .a{
+    width:30px; height:30px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.85rem;
+  }
+  .mock-actions .call{ background:var(--leaf); color:#fff; }
+  .mock-actions .wa{ background:#2f8f57; color:#fff; }
+
+  /* ---------- section shell ---------- */
+  section{ padding:78px 0; }
+  .section-head{ max-width:52ch; margin-bottom:44px; }
+  .section-head .kicker{
+    font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.86rem;
+    color:var(--marigold-deep); display:block; margin-bottom:10px;
+  }
+  .section-head h2{ font-size:clamp(1.7rem,2.6vw,2.2rem); line-height:1.15; }
+  .section-head p{ color:var(--ink-soft); margin-top:14px; font-size:1.02rem; }
+
+  /* ---------- features (running list, not card grid) ---------- */
+  .feature-list{ border-top:1px solid var(--line); }
+  .feature-row{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:22px;
+    padding:26px 0;
+    border-bottom:1px solid var(--line);
+    align-items:start;
+  }
+  .feature-row .glyph{
+    width:44px; height:44px; border-radius:12px;
+    background:var(--card);
+    border:1px solid var(--card-line);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.25rem;
+  }
+  .feature-row h3{ font-size:1.14rem; font-weight:600; font-family:"Work Sans", sans-serif; }
+  .feature-row p{ color:var(--ink-soft); margin-top:6px; max-width:60ch; }
+
+  /* ---------- roles ---------- */
+  .roles{ background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .role-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:0;
+    border:1px solid var(--card-line);
+    border-radius:16px;
+    overflow:hidden;
+    background:var(--white);
+  }
+  .role{
+    padding:30px 26px;
+    border-right:1px solid var(--card-line);
+  }
+  .role:last-child{ border-right:none; }
+  .role .who{
+    font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.8rem; color:var(--marigold-deep);
+    text-transform:none;
+  }
+  .role h3{ margin-top:8px; font-size:1.2rem; }
+  .role p{ color:var(--ink-soft); margin-top:10px; font-size:0.95rem; }
+
+  /* ---------- install / download band ---------- */
+  .download-band{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:26px;
+    padding:56px 44px;
+    text-align:center;
+  }
+  .download-band h2{ color:var(--white); font-size:clamp(1.7rem,3vw,2.3rem); }
+  .download-band .tamil-line{ color:#F2C273; justify-content:center; }
+  .download-band p.lede{ color:#C9D0DE; margin:16px auto 0; max-width:48ch; }
+  .download-band .cta-row{ justify-content:center; margin-top:30px; }
+  .download-band .btn-ghost{ border-color:#C9D0DE; color:var(--paper); }
+  .download-band .btn-ghost:hover{ background:rgba(255,255,255,0.08); }
+  .download-band .version-badge{ color:#AEB7C8; }
+
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-top:44px;
+    text-align:left;
+  }
+  .step{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:12px;
+    padding:18px 16px;
+  }
+  .step .num{
+    font-family:"Fraunces", serif; font-size:1.5rem; color:var(--marigold);
+  }
+  .step p{ margin:8px 0 0; font-size:0.88rem; color:#D7DCE6; }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:30px 0 40px;
+  }
+  .foot-row{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
+  }
+  .foot-row .left{ display:flex; flex-direction:column; gap:4px; }
+  .foot-row .left .en{ font-family:"Fraunces", serif; font-weight:640; }
+  .foot-row .left .ta{ font-family:"Catamaran", sans-serif; font-size:0.78rem; color:var(--ink-soft); }
+  .foot-links{ display:flex; gap:22px; font-size:0.92rem; }
+  .foot-links a{ text-decoration:none; color:var(--ink-soft); }
+  .foot-links a:hover{ color:var(--ink); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .phone-wrap{ order:-1; margin-bottom:8px; }
+    .phone{ transform:none; max-width:280px; }
+    nav.links{ display:none; }
+    .role-grid{ grid-template-columns:1fr; }
+    .role{ border-right:none; border-bottom:1px solid var(--card-line); }
+    .role:last-child{ border-bottom:none; }
+    .steps{ grid-template-columns:1fr 1fr; }
+    .download-band{ padding:40px 22px; }
+  }
+  @media (max-width: 520px){
+    .steps{ grid-template-columns:1fr; }
+    .feature-row{ grid-template-columns:44px 1fr; gap:14px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav-row">
+    <a class="wordmark" href="#top">
+      <span class="en">AdiraiDials</span>
+      <span class="ta tamil">அதிரை டயல்ஸ்</span>
+    </a>
+    <nav class="links">
+      <a href="#features">Features</a>
+      <a href="#roles">How it works</a>
+      <a href="#download">Install</a>
+    </nav>
+    <a class="btn btn-primary btn-small" href="#" data-download-btn>
+      <svg class="icon-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M6.5 10.5 12 16l5.5-5.5"/><path d="M4 20h16"/></svg>
+      <span class="btn-label">Download</span>
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow-line">
+          <span class="dot"></span>
+          <span>Free · Android · Community-run</span>
+        </div>
+        <h1 class="headline">Every business in your area, one tap away.</h1>
+        <div class="tamil-line tamil">உங்கள் ஊர் தொழில்கள் அனைத்தும் ஒரே தொடுதலில்.</div>
+        <p class="lede">AdiraiDials is a phone directory built by and for a community, not a search engine. Look up any local shop, service, or contact by name, type, city or street — in Tamil or English — and call or WhatsApp them straight from the listing.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#" data-download-btn>
+            <svg class="icon-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M6.5 10.5 12 16l5.5-5.5"/><path d="M4 20h16"/></svg>
+            <span class="btn-label">Download the APK</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener">All releases on GitHub</a>
+        </div>
+        <div class="version-badge" id="version-badge">Checking latest version…</div>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-bar">
+              <div>
+                <div class="app-title">AdiraiDials</div>
+                <div class="app-sub tamil">அதிரை டயல்ஸ்</div>
+              </div>
+            </div>
+            <div class="search-pill">Search by name, type, city…</div>
+
+            <div class="mock-card">
+              <div class="row-top">
+                <div class="mock-pill"><span class="en">AUTO</span><span class="ta tamil">ஆட்டோ</span></div>
+                <div class="mock-pill"><span class="en">PERUR</span><span class="ta tamil">பேரூர்</span></div>
+                <div class="mock-dot"></div>
+              </div>
+              <div class="mock-name">Selvam Auto Works</div>
+              <div class="mock-actions">
+                <div class="a call">☎</div>
+                <div class="a wa">◎</div>
+              </div>
+            </div>
+
+            <div class="mock-card">
+              <div class="row-top">
+                <div class="mock-pill"><span class="en">GROCERY</span><span class="ta tamil">மளிகைக் கடை</span></div>
+                <div class="mock-pill"><span class="en">KOVIL ST</span><span class="ta tamil">கோவில் தெரு</span></div>
+                <div class="mock-dot"></div>
+              </div>
+              <div class="mock-name">Lakshmi Stores</div>
+              <div class="mock-actions">
+                <div class="a call">☎</div>
+                <div class="a wa">◎</div>
+              </div>
+            </div>
+
+            <div class="mock-card">
+              <div class="row-top">
+                <div class="mock-pill"><span class="en">ELECTRICIAN</span><span class="ta tamil">எலக்ட்ரீஷியன்</span></div>
+                <div class="mock-dot" style="background:#B0472A;"></div>
+              </div>
+              <div class="mock-name">Muthu Electricals</div>
+              <div class="mock-actions">
+                <div class="a call">☎</div>
+                <div class="a wa">◎</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker tamil">என்ன செய்யலாம்</span>
+        <h2>Built around how people actually look things up.</h2>
+        <p>No account walls, no ads, no scrolling through irrelevant results — just the numbers your area actually needs, kept current by the people who use them.</p>
+      </div>
+
+      <div class="feature-list">
+        <div class="feature-row">
+          <div class="glyph">🔎</div>
+          <div>
+            <h3>Search and filter, bilingually</h3>
+            <p>Look things up by business type, city, or street — type a few letters in Tamil or English and matching results narrow instantly.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="glyph">☎</div>
+          <div>
+            <h3>Call or WhatsApp in one tap</h3>
+            <p>Every listing has a direct call button and a WhatsApp button. No copying numbers, no switching between apps to find who you meant to contact.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="glyph">✎</div>
+          <div>
+            <h3>Add a business yourself</h3>
+            <p>Know a shop or service that isn't listed? Submit it directly from the app — name, type, city, street, and contact numbers — for an admin to review.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="glyph">⚑</div>
+          <div>
+            <h3>Something wrong? Flag it</h3>
+            <p>Report outdated or incorrect listings, or message the admin team directly if you need help — every report goes straight to someone who can act on it.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="glyph">🔔</div>
+          <div>
+            <h3>Live notifications</h3>
+            <p>Get notified the moment there's a new announcement or a reply to something you sent in — turn it on once in Settings and it runs quietly in the background.</p>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="glyph">✓</div>
+          <div>
+            <h3>Checked before it's public</h3>
+            <p>Every new listing is reviewed by a community admin before it goes live, so the directory stays accurate instead of turning into an open wiki free-for-all.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ROLES ================= -->
+  <section id="roles" class="roles">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker tamil">மூன்று வழிகள்</span>
+        <h2>Everyone starts as a browser. Some go further.</h2>
+        <p>AdiraiDials doesn't split into separate apps for different people — it's one app that opens up depending on what you need to do.</p>
+      </div>
+
+      <div class="role-grid">
+        <div class="role">
+          <span class="who">No account needed</span>
+          <h3>Browse &amp; call</h3>
+          <p>Open the app and start searching straight away. Every listing, every call and WhatsApp button, works without signing up for anything.</p>
+        </div>
+        <div class="role">
+          <span class="who">Sign up in the app</span>
+          <h3>Contribute</h3>
+          <p>Submit new businesses, report bad listings, or message the admins. Your submissions are reviewed before they go live, and you'll be notified when an admin replies.</p>
+        </div>
+        <div class="role">
+          <span class="who">Community moderators</span>
+          <h3>Administer</h3>
+          <p>Admins review submissions and reports, manage password resets, post announcements, and keep the directory's cities, streets, and business types organized.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DOWNLOAD ================= -->
+  <section id="download">
+    <div class="wrap">
+      <div class="download-band">
+        <div class="eyebrow-line" style="justify-content:center;">
+          <span class="dot"></span>
+          <span style="color:#AEB7C8;">Distributed directly, not through the Play Store</span>
+        </div>
+        <h2>Get AdiraiDials on your phone.</h2>
+        <div class="tamil-line tamil">உங்கள் தொலைபேசியில் அதிரை டயல்ஸை பெறுங்கள்.</div>
+        <p class="lede">AdiraiDials is published straight from its GitHub releases, so the download button below always fetches the newest build — no store account, no waiting on app review.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#" data-download-btn>
+            <svg class="icon-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M6.5 10.5 12 16l5.5-5.5"/><path d="M4 20h16"/></svg>
+            <span class="btn-label">Download the APK</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener">Browse all versions</a>
+        </div>
+        <div class="version-badge" id="version-badge-2">Checking latest version…</div>
+
+        <div class="steps">
+          <div class="step"><div class="num">1</div><p>Tap Download above on your Android phone.</p></div>
+          <div class="step"><div class="num">2</div><p>If asked, allow installs from this browser or file manager.</p></div>
+          <div class="step"><div class="num">3</div><p>Open the downloaded file and tap Install.</p></div>
+          <div class="step"><div class="num">4</div><p>Open AdiraiDials — no account needed to start browsing.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div class="left">
+      <span class="en">AdiraiDials</span>
+      <span class="ta tamil">அதிரை டயல்ஸ்</span>
+    </div>
+    <div class="foot-links">
+      <a href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener">Releases</a>
+      <a href="https://github.com/adiraimaji" target="_blank" rel="noopener">GitHub</a>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var REPO = 'adiraimaji/AdiraiDialsReleases';
+  var API_URL = 'https://api.github.com/repos/' + REPO + '/releases/latest';
+  var FALLBACK_URL = 'https://github.com/' + REPO + '/releases/latest';
+  var cached = null;
+
+  function formatSize(bytes) {
+    if (!bytes) return '';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  // Finds the latest release's .apk asset via the GitHub API, rather than a hardcoded
+  // filename -- this is what makes the download button (and version badges) always point
+  // at whatever the newest release actually is, with nothing to update on this page when a
+  // new version ships.
+  function fetchLatestApk() {
+    if (cached) return Promise.resolve(cached);
+    return fetch(API_URL, { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (res) {
+        if (!res.ok) throw new Error('GitHub API responded ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var assets = data.assets || [];
+        var apk = null;
+        for (var i = 0; i < assets.length; i++) {
+          if (assets[i].name && assets[i].name.toLowerCase().endsWith('.apk')) { apk = assets[i]; break; }
+        }
+        if (!apk) throw new Error('No .apk asset on the latest release');
+        cached = { url: apk.browser_download_url, tag: data.tag_name, size: apk.size };
+        return cached;
+      });
+  }
+
+  function handleDownloadClick(e) {
+    e.preventDefault();
+    var btn = e.currentTarget;
+    var label = btn.querySelector('.btn-label');
+    var original = label.textContent;
+    btn.classList.add('is-loading');
+    label.textContent = 'Finding latest release…';
+    fetchLatestApk()
+      .then(function (info) { window.location.href = info.url; })
+      .catch(function () { window.open(FALLBACK_URL, '_blank', 'noopener'); })
+      .finally(function () {
+        setTimeout(function () {
+          btn.classList.remove('is-loading');
+          label.textContent = original;
+        }, 1200);
+      });
+  }
+
+  function populateVersionBadges() {
+    var badges = [document.getElementById('version-badge'), document.getElementById('version-badge-2')];
+    fetchLatestApk()
+      .then(function (info) {
+        badges.forEach(function (b) {
+          if (!b) return;
+          b.textContent = 'Latest: ' + info.tag + ' · ' + formatSize(info.size);
+          b.classList.add('is-visible');
+        });
+      })
+      .catch(function () {
+        // Quiet failure -- the buttons still work (they fall back to the releases page),
+        // this badge is just a nice-to-have preview of what you'll get.
+        badges.forEach(function (b) { if (b) b.textContent = ''; });
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-download-btn]').forEach(function (btn) {
+      btn.addEventListener('click', handleDownloadClick);
+    });
+    populateVersionBadges();
+  });
+})();
+</script>
+
+</body>
+</html>
