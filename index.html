@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,6 +76,38 @@
   }
 
   .tamil{ font-family:"Catamaran", sans-serif; }
+
+  /* ---------- language toggle ---------- */
+  /* Elements tagged .lang-en / .lang-ta show or hide based on [data-lang] on <html>.
+     Elements inside .no-translate (the phone mockup) are exempt and always shown. */
+  html[data-lang="en"] .lang-ta{ display:none !important; }
+  html[data-lang="ta"] .lang-en{ display:none !important; }
+  html[data-lang="ta"] .lang-ta.tamil{ font-family:"Catamaran", sans-serif; }
+
+  .lang-switch{
+    display:inline-flex;
+    border:1px solid var(--blue-700);
+    border-radius:9px;
+    overflow:hidden;
+    flex:none;
+  }
+  .lang-switch button{
+    border:none;
+    background:transparent;
+    color:var(--blue-900);
+    font-family:"Work Sans", sans-serif;
+    font-weight:600;
+    font-size:0.82rem;
+    padding:8px 13px;
+    cursor:pointer;
+    transition:background 120ms ease, color 120ms ease;
+  }
+  .lang-switch button + button{ border-left:1px solid var(--blue-700); }
+  .lang-switch button[aria-pressed="true"]{
+    background:var(--brand-blue);
+    color:var(--white);
+  }
+  .lang-switch button:not([aria-pressed="true"]):hover{ background:var(--blue-100); }
 
   a{ color:inherit; }
 
@@ -211,7 +243,7 @@
   .version-badge.is-visible{ opacity:1; }
 
   /* phone mockup */
-  .phone-wrap{ display:flex; justify-content:center; }
+  .phone-wrap{ display:flex; flex-direction:column; align-items:center; }
   .phone{
     width:100%;
     max-width:320px;
@@ -288,6 +320,52 @@
   .mock-actions .call{ background:var(--brand-blue); color:#fff; }
   .mock-actions .wa{ background:var(--leaf); color:#fff; }
 
+  /* business-hours dot legend, sits under the phone mockup, explains what the
+     green/grey open-status dot on each mock card means */
+  .hours-legend{
+    display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+    gap:8px 20px;
+    margin-top:16px;
+    font-size:0.84rem;
+    color:var(--ink-soft);
+  }
+  .hours-legend .legend-item{ display:flex; align-items:center; gap:7px; }
+  .hours-legend .legend-dot{
+    width:10px; height:10px; border-radius:50%; flex:none;
+  }
+  .hours-legend .legend-dot.is-open{ background:var(--leaf); }
+  .hours-legend .legend-dot.is-closed{ background:var(--closed-grey); }
+  .hours-legend .legend-ta{
+    font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.78rem; color:var(--blue-600);
+  }
+
+  /* ---------- disclaimer banner ---------- */
+  .disclaimer{
+    padding:16px 0 0;
+  }
+  .disclaimer-card{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    background:var(--blue-100);
+    border:1px solid var(--blue-300);
+    border-radius:14px;
+    padding:16px 20px;
+  }
+  .disclaimer-card .d-icon{
+    width:22px; height:22px; flex:none; margin-top:2px;
+    color:var(--blue-700);
+  }
+  .disclaimer-card p{
+    margin:0;
+    color:var(--blue-900);
+    font-size:0.92rem;
+    line-height:1.5;
+  }
+  .disclaimer-card p.lang-ta{
+    font-family:"Catamaran", sans-serif;
+  }
+
   /* ---------- section shell ---------- */
   section{ padding:78px 0; }
   .section-head{ max-width:52ch; margin-bottom:44px; }
@@ -320,6 +398,14 @@
   .feature-row p .icon{ width:14px; height:14px; color:var(--blue-700); vertical-align:-2px; }
   .feature-row h3{ font-size:1.14rem; font-weight:600; font-family:"Work Sans", sans-serif; }
   .feature-row p{ color:var(--ink-soft); margin-top:6px; max-width:60ch; }
+  .feature-row .feature-title-ta{
+    font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.86rem;
+    color:var(--blue-600); margin-top:3px;
+  }
+  .feature-row .feature-desc-ta{
+    font-family:"Catamaran", sans-serif; font-size:0.92rem;
+    color:var(--ink-soft); margin-top:6px; max-width:60ch;
+  }
 
   /* ---------- roles ---------- */
   .roles{ background:var(--blue-100); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
@@ -549,14 +635,20 @@
       </span>
     </a>
     <nav class="links">
-      <a href="#features">Features</a>
-      <a href="#roles">How it works</a>
-      <a href="#download">Install</a>
+      <a href="#features"><span class="lang-en">Features</span><span class="lang-ta tamil">அம்சங்கள்</span></a>
+      <a href="#roles"><span class="lang-en">How it works</span><span class="lang-ta tamil">எப்படி செயல்படுகிறது</span></a>
+      <a href="#download"><span class="lang-en">Install</span><span class="lang-ta tamil">நிறுவுக</span></a>
     </nav>
-    <a class="btn btn-primary btn-small" href="#" data-download-btn>
-      <svg class="icon-dl icon" aria-hidden="true"><use href="#icon-download"></use></svg>
-      <span class="btn-label">Download</span>
-    </a>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div class="lang-switch" role="group" aria-label="Choose language / மொழியைத் தேர்வு செய்யவும்">
+        <button type="button" data-lang-btn="en" aria-pressed="true">ENG</button>
+        <button type="button" data-lang-btn="ta" aria-pressed="false">தமிழ்</button>
+      </div>
+      <a class="btn btn-primary btn-small" href="#" data-download-btn>
+        <svg class="icon-dl icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+        <span class="btn-label"><span class="lang-en">Download</span><span class="lang-ta tamil">பதிவிறக்கு</span></span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -568,19 +660,22 @@
       <div>
         <div class="eyebrow-line">
           <span class="dot"></span>
-          <span>Free · Android · Community-run</span>
+          <span class="lang-en">Free · Android · Community-run</span>
+          <span class="lang-ta tamil">இலவசம் · ஆண்ட்ராய்டு · சமூகத்தால் நடத்தப்படுகிறது</span>
         </div>
-        <h1 class="headline">Every business contacts in our Adirai, one tap away.</h1>
-          <div class="tamil-line tamil">நம்ம அதிரை மற்றும் சுற்றுவட்டார தொழில் தொடர்புகள் அனைத்தும் ஒரே தொடுதலில்.</div>
-        <p class="lede">AdiraiDials is a phone directory built by and for a community, not a search engine. Look up any local shop, service, or contact by name, type, city or street — in Tamil or English — and call or WhatsApp them straight from the listing.</p>
+        <h1 class="headline lang-en">Every business contacts in our Adirai, one tap away.</h1>
+        <h1 class="headline lang-ta tamil">நம்ம அதிரை மற்றும் சுற்றுவட்டார தொழில் தொடர்புகள் அனைத்தும் ஒரே தொடுதலில்.</h1>
+       
+        <p class="lede lang-en">AdiraiDials is a phone directory built by and for a community, not a search engine. Look up any local shop, service, or contact by name, type, city or street — in Tamil or English — and call or WhatsApp them straight from the listing.</p>
+        <p class="lede lang-ta tamil">AdiraiDials என்பது ஒரு தேடுபொறி அல்ல, சமூகத்தால் சமூகத்திற்காக உருவாக்கப்பட்ட ஒரு தொலைபேசி அடைவு. எந்த உள்ளூர் கடை, சேவை அல்லது தொடர்பையும் பெயர், வகை, ஊர் அல்லது தெரு வாரியாக — தமிழிலோ ஆங்கிலத்திலோ — தேடி, பட்டியலிலிருந்தே நேரடியாக அழைக்கலாம் அல்லது WhatsApp செய்யலாம்.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#" data-download-btn>
             <svg class="icon-dl icon" aria-hidden="true"><use href="#icon-download"></use></svg>
-            <span class="btn-label">Download the APK</span>
+            <span class="btn-label"><span class="lang-en">Download the APK</span><span class="lang-ta tamil">APK-ஐ பதிவிறக்குக</span></span>
           </a>
-          <a class="btn btn-ghost" href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener">All releases on GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener"><span class="lang-en">All releases on GitHub</span><span class="lang-ta tamil">GitHub-இல் அனைத்து பதிப்புகள்</span></a>
         </div>
-        <div class="version-badge" id="version-badge">Checking latest version…</div>
+        <div class="version-badge" id="version-badge" data-default-en="Checking latest version…" data-default-ta="சமீபத்திய பதிப்பைச் சரிபார்க்கிறது…">Checking latest version…</div>
       </div>
 
       <div class="phone-wrap">
@@ -646,6 +741,30 @@
             </div>
           </div>
         </div>
+
+        <div class="hours-legend">
+          <span class="legend-item">
+            <span class="legend-dot is-open"></span>
+            <span class="lang-en">Open now</span><span class="legend-ta lang-ta tamil">திறந்திருக்கிறது</span>
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot is-closed"></span>
+            <span class="lang-en">Closed</span><span class="legend-ta lang-ta tamil">மூடப்பட்டுள்ளது</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DISCLAIMER ================= -->
+  <section class="disclaimer">
+    <div class="wrap">
+      <div class="disclaimer-card">
+        <svg class="icon d-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        <div>
+          <p class="lang-en">As noted on the app's home screen: contact details aren't verified by us. Most listings are added by contributors, so if something looks wrong — a wrong number, a closed business, a mistaken address — please report it and an admin will look into it.</p>
+          <p class="lang-ta tamil">பயன்பாட்டின் முகப்புப் பக்கத்தில் குறிப்பிட்டுள்ளபடி: தொடர்பு விவரங்கள் எங்களால் சரிபார்க்கப்படவில்லை. பெரும்பாலான பட்டியல்கள் பங்களிப்பாளர்களால் சேர்க்கப்படுகின்றன, எனவே ஏதேனும் தவறாகத் தோன்றினால் — தவறான எண், மூடப்பட்ட வணிகம், தவறான முகவரி — தயவுசெய்து அதைப் புகாரளிக்கவும், ஒரு நிர்வாகி அதைப் பரிசோதிப்பார்.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -654,52 +773,67 @@
   <section id="features">
     <div class="wrap">
       <div class="section-head">
-        <span class="kicker tamil">என்ன செய்யலாம்</span>
-        <h2>Built around how people actually look things up.</h2>
-        <p>No account walls, no ads, no scrolling through irrelevant results — just the numbers your area actually needs, kept current by the people who use them.</p>
+        <span class="kicker lang-en">What you can do</span>
+        <span class="kicker lang-ta tamil">என்ன செய்யலாம்</span>
+        <h2 class="lang-en">Built around how people actually look things up.</h2>
+        <h2 class="lang-ta tamil">மக்கள் எளிதில் தேடும் விதத்திற்கேற்ப வடிவமைக்கப்பட்டது.</h2>
+        <p class="lang-en">No account walls, no ads, no scrolling through irrelevant results — just the numbers your area actually needs, kept current by the people who use them.</p>
+        <p class="lang-ta tamil">கணக்கு துவங்க தேவை இல்லை, விளம்பரம் இல்லை, தேவையற்ற முடிவுகளில் ஸ்க்ரோல் செய்ய வேண்டாம் — உங்கள் பகுதிக்குத் தேவையான எண்களை மட்டும் தேடும் வசதி, அவற்றைப் பயன்படுத்துபவர்களாலேயே புதுப்பிக்கப்படுகின்றன.</p>
       </div>
 
       <div class="feature-list">
         <div class="feature-row">
           <div class="glyph"><svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg></div>
           <div>
-            <h3>Search and filter, bilingually</h3>
-            <p>Look things up by business type, city, or street — type a few letters in Tamil or English and matching results narrow instantly.</p>
+            <h3 class="lang-en">Search and filter, bilingually</h3>
+            <div class="feature-title-ta lang-ta tamil">இருமொழியில் தேடல் மற்றும் வடிகட்டல்</div>
+            <p class="lang-en">Look things up by business type, city, or street — type a few letters in Tamil or English and matching results narrow instantly.</p>
+            <p class="feature-desc-ta lang-ta tamil">வணிக வகை, ஊர் அல்லது தெரு வாரியாக தேடுங்கள் — தமிழிலோ ஆங்கிலத்திலோ சில எழுத்துக்களை தட்டச்சு செய்தால் பொருந்தும் முடிவுகள் உடனடியாக வடிகட்டப்படும்.</p>
           </div>
         </div>
         <div class="feature-row">
           <div class="glyph"><svg class="icon" aria-hidden="true"><use href="#icon-call2"></use></svg></div>
           <div>
-            <h3>Call or WhatsApp in one tap</h3>
-            <p>Every listing has a direct call button and a WhatsApp button. No copying numbers, no switching between apps to find who you meant to contact.</p>
+            <h3 class="lang-en">Call or WhatsApp in one tap</h3>
+            <div class="feature-title-ta lang-ta tamil">எளிதான முறையில் அழைக்கவும் அல்லது WhatsApp செய்யலாம்</div>
+            <p class="lang-en">Every listing has a direct call button and a WhatsApp button. No copying numbers, no switching between apps to find who you meant to contact.</p>
+            <p class="feature-desc-ta lang-ta tamil">ஒவ்வொரு பட்டியலிலும் நேரடி அழைப்பு பொத்தானும் WhatsApp பொத்தானும் உள்ளது. எண்களை காப்பி செய்ய வேண்டாம், நீங்கள் தொடர்பு கொள்ள நினைத்தவரை கண்டுபிடிக்க பயன்பாடுகளுக்கு இடையே மாற வேண்டாம்.</p>
           </div>
         </div>
         <div class="feature-row">
           <div class="glyph"><svg class="icon" aria-hidden="true"><use href="#icon-submit"></use></svg></div>
           <div>
-            <h3>Add a business yourself</h3>
-            <p>Know a shop or service that isn't listed? Submit it directly from the app — name, type, city, street, and contact numbers — for an admin to review.</p>
+            <h3 class="lang-en">Add a business yourself</h3>
+            <div class="feature-title-ta lang-ta tamil">நீங்களே ஒரு வணிகத்தை சேர்க்கலாம்</div>
+            <p class="lang-en">Know a shop or service that isn't listed? Submit it directly from the app — name, type, city, street, and contact numbers — for an admin to review.</p>
+            <p class="feature-desc-ta lang-ta tamil">பட்டியலில் இல்லாத ஒரு கடை அல்லது சேவை உங்களுக்குத் தெரியுமா? பெயர், வகை, ஊர், தெரு, தொடர்பு எண்கள் ஆகியவற்றுடன் பயன்பாட்டிலிருந்தே நேரடியாக சமர்ப்பிக்கவும் — நிர்வாகி மறுஆய்வு செய்வார்.</p>
           </div>
         </div>
         <div class="feature-row">
           <div class="glyph"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></div>
           <div>
-            <h3>Something wrong? Flag it</h3>
-            <p>Report outdated or incorrect listings, or message the admin team directly if you need help — every report goes straight to someone who can act on it.</p>
+            <h3 class="lang-en">Something wrong? Flag it</h3>
+            <div class="feature-title-ta lang-ta tamil">ஏதேனும் தவறா? புகார் அளிக்கவும்</div>
+            <p class="lang-en">Report outdated or incorrect listings, or message the admin team directly if you need help — every report goes straight to someone who can act on it.</p>
+            <p class="feature-desc-ta lang-ta tamil">காலாவதியான அல்லது தவறான பட்டியல்களைப் புகாரளிக்கவும், அல்லது உதவி தேவைப்பட்டால் நிர்வாகிக் குழுவிற்கு நேரடியாக செய்தி அனுப்பவும் — ஒவ்வொரு புகாரும் நடவடிக்கை எடுக்கக்கூடியவரிடம் நேரடியாகச் செல்கிறது.</p>
           </div>
         </div>
         <div class="feature-row">
           <div class="glyph"><svg class="icon" aria-hidden="true"><use href="#icon-updates"></use></svg></div>
           <div>
-            <h3>Live notifications</h3>
-            <p>Get notified the moment there's a new announcement or a reply to something you sent in — turn it on once in <svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg> Settings and it runs quietly in the background.</p>
+            <h3 class="lang-en">Live notifications</h3>
+            <div class="feature-title-ta lang-ta tamil">நேரடி அறிவிப்புகள்</div>
+            <p class="lang-en">Get notified the moment there's a new announcement or a reply to something you sent in — turn it on once in <svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg> Settings and it runs quietly in the background.</p>
+            <p class="feature-desc-ta lang-ta tamil">புதிய அறிவிப்பு வந்தவுடன் அல்லது நீங்கள் அனுப்பியதற்குப் பதில் வந்தவுடன் அறிவிப்பு கிடைக்கும் — <svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg> அமைப்புகளில் ஒருமுறை இயக்கினால், இது பின்னணியில் அமைதியாக இயங்கும்.</p>
           </div>
         </div>
         <div class="feature-row">
           <div class="glyph"><svg class="icon" aria-hidden="true"><use href="#icon-admin"></use></svg></div>
           <div>
-            <h3>Checked before it's public</h3>
-            <p>Every new listing is reviewed by a community admin before it goes live, so the directory stays accurate instead of turning into an open wiki free-for-all.</p>
+            <h3 class="lang-en">Checked before it's public</h3>
+            <div class="feature-title-ta lang-ta tamil">பொதுவெளியில் வெளியிடும் முன் சரிபார்க்கப்படுகிறது</div>
+            <p class="lang-en">Every new listing is reviewed by a community admin before it goes live.</p>
+            <p class="feature-desc-ta lang-ta tamil">ஒவ்வொரு புதிய பட்டியலும் வெளியிடப்படுவதற்கு முன் ஒரு சமூக நிர்வாகியால் மறுஆய்வு செய்யப்படுகிறது.</p>
           </div>
         </div>
       </div>
@@ -710,29 +844,41 @@
   <section id="roles" class="roles">
     <div class="wrap">
       <div class="section-head">
-        <span class="kicker tamil">மூன்று வழிகள்</span>
-        <h2>Everyone starts as a browser. Some go further.</h2>
-        <p>AdiraiDials doesn't split into separate apps for different people — it's one app that opens up depending on what you need to do.</p>
+        <span class="kicker lang-en">Three ways in</span>
+        <span class="kicker lang-ta tamil">மூன்று வழிகள்</span>
+        <h2 class="lang-en">Everyone starts as a browser. Some go further.</h2>
+        <h2 class="lang-ta tamil">அனைவரும் ஒரு பார்வையாளராகவே தொடங்குகிறார்கள். சிலர் வியாபார எண்களை பதிவேற்றுவதின் மூலம் உதவி செல்கிறார்கள்.</h2>
+        <p class="lang-en">AdiraiDials doesn't split into separate apps for different people — it's one app that opens up depending on what you need to do.</p>
+        <p class="lang-ta tamil">AdiraiDials வெவ்வேறு பயனர்களுக்கு தனித்தனி பயன்பாடுகளாகப் பிரிக்கப்படவில்லை — நீங்கள் என்ன செய்ய வேண்டும் என்பதைப் பொறுத்து விரிவடையும் ஒரே ஒரு அப்ளிகேஷன் இது.</p>
       </div>
 
       <div class="role-grid">
         <div class="role">
           <div class="role-icon"><svg class="icon" aria-hidden="true"><use href="#icon-home"></use></svg></div>
-          <span class="who">No account needed</span>
-          <h3>Browse &amp; call</h3>
-          <p>Open the app and start searching straight away. Every listing, every call and WhatsApp button, works without signing up for anything.</p>
+          <span class="who lang-en">No account needed</span>
+          <span class="who lang-ta tamil">கணக்கு தேவையில்லை</span>
+          <h3 class="lang-en">Browse &amp; call</h3>
+          <h3 class="lang-ta tamil">தேடுங்கள் &amp; தொடர்புகொள்ளுங்கள்</h3>
+          <p class="lang-en">Open the app and start searching straight away. Every listing, every call and WhatsApp button, works without signing up for anything.</p>
+          <p class="lang-ta tamil">அப்ளிகேஷனை திறந்து தேவையான வியாபார எண்ணை தேடத் தொடங்குங்கள். ஒவ்வொரு பட்டியலும், ஒவ்வொரு அழைப்பு மற்றும் WhatsApp பொத்தானும், எதற்கும் பதிவு செய்யாமலேயே செயல்படும்.</p>
         </div>
         <div class="role">
           <div class="role-icon"><svg class="icon" aria-hidden="true"><use href="#icon-contribute"></use></svg></div>
-          <span class="who"><svg class="icon" aria-hidden="true"><use href="#icon-user-signed-in"></use></svg>Sign up in the app</span>
-          <h3>Contribute</h3>
-          <p>Submit new businesses, report bad listings, or message the admins. Your submissions are reviewed before they go live, and you'll be notified when an admin replies.</p>
+          <span class="who lang-en"><svg class="icon" aria-hidden="true"><use href="#icon-user-signed-in"></use></svg>Sign up in the app</span>
+          <span class="who lang-ta tamil"><svg class="icon" aria-hidden="true"><use href="#icon-user-signed-in"></use></svg>அப்ளிகேஷனில் பதிவு செய்யவும்</span>
+          <h3 class="lang-en">Contribute</h3>
+          <h3 class="lang-ta tamil">பங்களிக்கவும்</h3>
+          <p class="lang-en">Submit new businesses, report bad listings, or message the admins. Your submissions are reviewed before they go live, and you'll be notified when an admin replies.</p>
+          <p class="lang-ta tamil">புதிய வணிகங்களைச் சமர்ப்பிக்கவும், தவறான பட்டியல்களைப் புகாரளிக்கவும், அல்லது நிர்வாகிகளுக்குச் செய்தி அனுப்பவும். உங்கள் சமர்ப்பிப்புகள் வெளியிடப்படுவதற்கு முன் மறுஆய்வு செய்யப்படும், மேலும் ஒரு நிர்வாகி பதிலளிக்கும்போது உங்களுக்கு அறிவிப்பு வரும்.</p>
         </div>
         <div class="role">
           <div class="role-icon"><svg class="icon" aria-hidden="true"><use href="#icon-admin"></use></svg></div>
-          <span class="who">Community moderators</span>
-          <h3>Administer</h3>
-          <p>Admins review submissions and reports, manage password resets, post announcements, and keep the directory's cities, streets, and business types organized.</p>
+          <span class="who lang-en">Community moderators</span>
+          <span class="who lang-ta tamil">சமூக நிர்வாகிகள்</span>
+          <h3 class="lang-en">Administer</h3>
+          <h3 class="lang-ta tamil">நிர்வகிக்கவும்</h3>
+          <p class="lang-en">Admins review submissions and reports, manage password resets, post announcements, and keep the directory's cities, streets, and business types organized.</p>
+          <p class="lang-ta tamil">நிர்வாகிகள் சமர்ப்பிப்புகள் மற்றும் புகார்களை மறுஆய்வு செய்கிறார்கள், கடவுச்சொல் மீட்டமைப்புகளை நிர்வகிக்கிறார்கள், அறிவிப்புகளை வெளியிடுகிறார்கள், மேலும் அடைவின் ஊர்கள், தெருக்கள் மற்றும் வணிக வகைகளை ஒழுங்கமைத்து வைத்திருக்கிறார்கள்.</p>
         </div>
       </div>
     </div>
@@ -744,25 +890,28 @@
       <div class="download-band">
         <div class="eyebrow-line" style="justify-content:center;">
           <span class="dot"></span>
-          <span style="color:#b7d6f3;">Distributed directly, not through the Play Store</span>
+          <span class="lang-en" style="color:#b7d6f3;">Distributed directly, not through the Play Store</span>
+          <span class="lang-ta tamil" style="color:#b7d6f3;">Play Store வழியாக அல்ல, நேரடியாக வழங்கப்படுகிறது</span>
         </div>
-        <h2>Get AdiraiDials on your phone.</h2>
-        <div class="tamil-line tamil">உங்கள் தொலைபேசியில் அதிரை டயல்ஸை பெறுங்கள்.</div>
-        <p class="lede">AdiraiDials is published straight from its GitHub releases, so the download button below always fetches the newest build — no store account, no waiting on app review.</p>
+        <h2 class="lang-en">Get AdiraiDials on your phone.</h2>
+        <h2 class="lang-ta tamil">AdiraiDials-ஐ உங்கள் தொலைபேசியில் பெறுங்கள்.</h2>
+        <div class="tamil-line lang-ta tamil">உங்கள் தொலைபேசியில் AdiraiDials-ஐ பெறுங்கள்.</div>
+        <p class="lede lang-en">AdiraiDials is published straight from its GitHub releases, so the download button below always fetches the newest build — no store account, no waiting on app review.</p>
+        <p class="lede lang-ta tamil">AdiraiDials அதன் GitHub வெளியீடுகளிலிருந்து நேரடியாக வெளியிடப்படுகிறது, எனவே கீழேயுள்ள பதிவிறக்க பொத்தான் எப்போதும் சமீபத்திய பதிப்பைப் பெறும் — ஸ்டோர் கணக்கு தேவையில்லை, பயன்பாட்டு மறுஆய்வுக்காக காத்திருக்க வேண்டாம்.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#" data-download-btn>
             <svg class="icon-dl icon" aria-hidden="true"><use href="#icon-download"></use></svg>
-            <span class="btn-label">Download the APK</span>
+            <span class="btn-label"><span class="lang-en">Download the APK</span><span class="lang-ta tamil">APK-ஐ பதிவிறக்குக</span></span>
           </a>
-          <a class="btn btn-ghost" href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener">Browse all versions</a>
+          <a class="btn btn-ghost" href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener"><span class="lang-en">Browse all versions</span><span class="lang-ta tamil">அனைத்து பதிப்புகளையும் காணவும்</span></a>
         </div>
-        <div class="version-badge" id="version-badge-2">Checking latest version…</div>
+        <div class="version-badge" id="version-badge-2" data-default-en="Checking latest version…" data-default-ta="சமீபத்திய பதிப்பைச் சரிபார்க்கிறது…">Checking latest version…</div>
 
         <div class="steps">
-          <div class="step"><div class="num">1</div><p>Tap Download above on your Android phone.</p></div>
-          <div class="step"><div class="num">2</div><p>If asked, allow installs from this browser or file manager.</p></div>
-          <div class="step"><div class="num">3</div><p>Open the downloaded file and tap Install.</p></div>
-          <div class="step"><div class="num">4</div><p>Open AdiraiDials — no account needed to start browsing.</p></div>
+          <div class="step"><div class="num">1</div><p class="lang-en">Tap Download above on your Android phone.</p><p class="lang-ta tamil">உங்கள் ஆண்ட்ராய்டு தொலைபேசியில் மேலே பதிவிறக்குக என்பதைத் தட்டவும்.</p></div>
+          <div class="step"><div class="num">2</div><p class="lang-en">If asked, allow installs from this browser or file manager.</p><p class="lang-ta tamil">கேட்கப்பட்டால், இந்த உலாவி அல்லது கோப்பு மேலாளரிலிருந்து நிறுவல்களை அனுமதிக்கவும்.</p></div>
+          <div class="step"><div class="num">3</div><p class="lang-en">Open the downloaded file and tap Install.</p><p class="lang-ta tamil">பதிவிறக்கிய கோப்பைத் திறந்து நிறுவுக என்பதைத் தட்டவும்.</p></div>
+          <div class="step"><div class="num">4</div><p class="lang-en">Open AdiraiDials — no account needed to start browsing.</p><p class="lang-ta tamil">அதிரை டயல்ஸைத் திறக்கவும் — உலாவத் தொடங்க கணக்கு தேவையில்லை.</p></div>
         </div>
       </div>
     </div>
@@ -774,8 +923,10 @@
       <div class="contact-card">
         <svg class="app-mark contact-mark" viewBox="0 0 108 108" aria-hidden="true"><use href="#icon-app-mark"></use></svg>
         <div>
-          <h2>Questions, feedback, or a bug to report?</h2>
-          <p>Reach the AdiraiDials team directly — we read every message.</p>
+          <h2 class="lang-en">Questions, feedback, or a bug to report?</h2>
+          <h2 class="lang-ta tamil">கேள்விகள், கருத்துகள் அல்லது புகாரளிக்க வேண்டிய பிழையா?</h2>
+          <p class="lang-en">Reach the AdiraiDials team directly — we read every message.</p>
+          <p class="lang-ta tamil">AdiraiDials குழுவை நேரடியாக தொடர்பு கொள்ளுங்கள் — ஒவ்வொரு செய்தியையும் நாங்கள் படிக்கிறோம்.</p>
         </div>
         <a class="btn btn-primary" href="mailto:adiraidials@gmail.com">
           <span class="btn-label">adiraidials@gmail.com</span>
@@ -799,10 +950,10 @@
       <a class="foot-contact" href="mailto:adiraidials@gmail.com">adiraidials@gmail.com</a>
     </div>
     <div class="foot-links">
-      <a href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#icon-website"></use></svg>Releases</a>
+      <a href="https://github.com/adiraimaji/AdiraiDialsReleases/releases" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#icon-website"></use></svg><span class="lang-en">Releases</span><span class="lang-ta tamil">வெளியீடுகள்</span></a>
       <a href="https://github.com/adiraimaji" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#icon-website"></use></svg>GitHub</a>
-      <a href="mailto:adiraidials@gmail.com">Contact us</a>
-      <a href="#top"><svg class="icon icon-rot-up" aria-hidden="true"><use href="#icon-back"></use></svg>Back to top</a>
+      <a href="mailto:adiraidials@gmail.com"><span class="lang-en">Contact us</span><span class="lang-ta tamil">தொடர்பு கொள்ளவும்</span></a>
+      <a href="#top"><svg class="icon icon-rot-up" aria-hidden="true"><use href="#icon-back"></use></svg><span class="lang-en">Back to top</span><span class="lang-ta tamil">மேலே செல்லவும்</span></a>
     </div>
   </div>
 </footer>
@@ -838,13 +989,18 @@
       });
   }
 
+  function currentLang() {
+    return document.documentElement.getAttribute('data-lang') === 'ta' ? 'ta' : 'en';
+  }
+
   function handleDownloadClick(e) {
     e.preventDefault();
     var btn = e.currentTarget;
-    var label = btn.querySelector('.btn-label');
+    var lang = currentLang();
+    var label = btn.querySelector('.btn-label .lang-' + lang) || btn.querySelector('.btn-label');
     var original = label.textContent;
     btn.classList.add('is-loading');
-    label.textContent = 'Finding latest release…';
+    label.textContent = (lang === 'ta') ? 'சமீபத்திய பதிப்பைத் தேடுகிறது…' : 'Finding latest release…';
     fetchLatestApk()
       .then(function (info) { window.location.href = info.url; })
       .catch(function () { window.open(FALLBACK_URL, '_blank', 'noopener'); })
@@ -856,24 +1012,48 @@
       });
   }
 
-  function populateVersionBadges() {
+  var latestInfo = null;
+
+  function renderVersionBadges() {
     var badges = [document.getElementById('version-badge'), document.getElementById('version-badge-2')];
+    var lang = currentLang();
+    badges.forEach(function (b) {
+      if (!b) return;
+      if (latestInfo) {
+        var prefix = (lang === 'ta') ? 'சமீபத்தியது: ' : 'Latest: ';
+        b.textContent = prefix + latestInfo.tag + ' · ' + formatSize(latestInfo.size);
+        b.classList.add('is-visible');
+      } else {
+        var text = b.getAttribute(lang === 'ta' ? 'data-default-ta' : 'data-default-en');
+        if (text) b.textContent = text;
+      }
+    });
+  }
+
+  function populateVersionBadges() {
     fetchLatestApk()
-      .then(function (info) {
-        badges.forEach(function (b) {
-          if (!b) return;
-          b.textContent = 'Latest: ' + info.tag + ' · ' + formatSize(info.size);
-          b.classList.add('is-visible');
-        });
-      })
+      .then(function (info) { latestInfo = info; renderVersionBadges(); })
       .catch(function () {
-        badges.forEach(function (b) { if (b) b.textContent = ''; });
+        [document.getElementById('version-badge'), document.getElementById('version-badge-2')].forEach(function (b) {
+          if (b) b.textContent = '';
+        });
       });
+  }
+
+  function setLanguage(lang) {
+    document.documentElement.setAttribute('data-lang', lang);
+    document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', btn.getAttribute('data-lang-btn') === lang ? 'true' : 'false');
+    });
+    renderVersionBadges();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-download-btn]').forEach(function (btn) {
       btn.addEventListener('click', handleDownloadClick);
+    });
+    document.querySelectorAll('[data-lang-btn]').forEach(function (btn) {
+      btn.addEventListener('click', function () { setLanguage(btn.getAttribute('data-lang-btn')); });
     });
     populateVersionBadges();
   });
