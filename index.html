@@ -50,7 +50,7 @@
   .app-mark{ display:block; border-radius:22%; flex:none; box-shadow:0 2px 6px rgba(11,36,80,0.25); }
 
   *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:smooth; overflow-x:hidden; width:100%; }
 
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
@@ -65,6 +65,8 @@
     font-size:16px;
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    width:100%;
   }
 
   h1,h2,h3{
@@ -115,6 +117,7 @@
     max-width:var(--max);
     margin:0 auto;
     padding:0 28px;
+    width:100%;
   }
 
   :focus-visible{
@@ -128,6 +131,7 @@
     background:rgba(244,250,255,0.94);
     backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
+    width:100%;
   }
   .nav-row{
     display:flex; align-items:center; justify-content:space-between;
@@ -135,19 +139,26 @@
     max-width:var(--max);
     margin:0 auto;
     gap:16px;
+    flex-wrap:wrap;
+    row-gap:10px;
+    width:100%;
   }
   .wordmark{
     display:flex; flex-direction:row; align-items:center; gap:10px;
     text-decoration:none;
+    min-width:0;
+    flex:1 1 auto;
   }
   .wordmark .app-mark{ width:34px; height:34px; }
-  .wordmark .text{ display:flex; flex-direction:column; line-height:1.05; }
+  .wordmark .text{ display:flex; flex-direction:column; line-height:1.05; min-width:0; }
   .wordmark .en{
     font-family:"Fraunces", serif; font-weight:640; font-size:1.32rem; color:var(--blue-900);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .wordmark .ta{
     font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.72rem; color:var(--blue-600);
     margin-top:2px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   nav.links{
     display:flex; gap:28px; align-items:center;
@@ -155,6 +166,11 @@
   }
   nav.links a{ text-decoration:none; color:var(--ink-soft); }
   nav.links a:hover{ color:var(--blue-700); }
+
+  .nav-actions{
+    display:flex; align-items:center; gap:14px;
+    flex:0 0 auto;
+  }
 
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:10px;
@@ -192,6 +208,8 @@
     background:
       radial-gradient(circle at 86% 20%, rgba(37,137,232,.16), transparent 28%),
       var(--paper);
+    width:100%;
+    overflow:hidden;
   }
   .hero-grid{
     display:grid;
@@ -202,10 +220,13 @@
   .eyebrow-line{
     display:flex; align-items:center; gap:10px;
     margin-bottom:22px;
+    flex-wrap:wrap;
+    row-gap:6px;
   }
   .eyebrow-line .dot{
     width:8px; height:8px; border-radius:50%; background:var(--blue-500);
     box-shadow:0 0 0 4px rgba(37,137,232,0.18);
+    flex:none;
   }
   .eyebrow-line span{
     font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.86rem;
@@ -243,7 +264,7 @@
   .version-badge.is-visible{ opacity:1; }
 
   /* phone mockup */
-  .phone-wrap{ display:flex; flex-direction:column; align-items:center; }
+  .phone-wrap{ display:flex; flex-direction:column; align-items:center; width:100%; }
   .phone{
     width:100%;
     max-width:320px;
@@ -367,7 +388,7 @@
   }
 
   /* ---------- section shell ---------- */
-  section{ padding:78px 0; }
+  section{ padding:78px 0; width:100%; }
   .section-head{ max-width:52ch; margin-bottom:44px; }
   .section-head .kicker{
     font-family:"Catamaran", sans-serif; font-weight:700; font-size:0.86rem;
@@ -495,6 +516,7 @@
   footer{
     border-top:1px solid var(--line);
     padding:30px 0 40px;
+    width:100%;
   }
   .foot-row{
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
@@ -516,7 +538,7 @@
   @media (max-width: 880px){
     .hero-grid{ grid-template-columns:1fr; }
     .phone-wrap{ order:-1; margin-bottom:8px; }
-    .phone{ transform:none; max-width:280px; }
+    .phone{ transform:none; max-width:400px; }
     nav.links{ display:none; }
     .role-grid{ grid-template-columns:1fr; }
     .role{ border-right:none; border-bottom:1px solid var(--line); }
@@ -524,9 +546,22 @@
     .steps{ grid-template-columns:1fr 1fr; }
     .download-band{ padding:40px 22px; }
   }
+  @media (max-width: 560px){
+    .wrap{ padding:0 18px; }
+    .nav-row{ padding:14px 18px; gap:10px; row-gap:8px; }
+    .nav-actions{ gap:8px; }
+    .wordmark{ gap:8px; }
+    .wordmark .app-mark{ width:28px; height:28px; }
+    .wordmark .en{ font-size:1.05rem; }
+    .wordmark .ta{ display:none; }
+    .lang-switch button{ padding:6px 9px; font-size:0.72rem; }
+    .nav-row .btn-small{ padding:10px; gap:0; }
+    .nav-row .btn-small .btn-label{ display:none; }
+  }
   @media (max-width: 520px){
     .steps{ grid-template-columns:1fr; }
     .feature-row{ grid-template-columns:44px 1fr; gap:14px; }
+    .phone{ max-width:100%; }
   }
 </style>
 </head>
@@ -639,7 +674,7 @@
       <a href="#roles"><span class="lang-en">How it works</span><span class="lang-ta tamil">எப்படி செயல்படுகிறது</span></a>
       <a href="#download"><span class="lang-en">Install</span><span class="lang-ta tamil">நிறுவுக</span></a>
     </nav>
-    <div style="display:flex; align-items:center; gap:14px;">
+    <div class="nav-actions">
       <div class="lang-switch" role="group" aria-label="Choose language / மொழியைத் தேர்வு செய்யவும்">
         <button type="button" data-lang-btn="en" aria-pressed="true">ENG</button>
         <button type="button" data-lang-btn="ta" aria-pressed="false">தமிழ்</button>
